@@ -1,0 +1,26 @@
+{
+  "name": "next-ecomm",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gowipehong/next-ecomm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gowipehong/next-ecomm/issues"
+  },
+  "homepage": "https://github.com/gowipehong/next-ecomm#readme",
+  "dependencies": {
+    "@prisma/client": "^4.10.1",
+    "express": "^4.18.2",
+    "prisma": "^4.10.1"
+  }
+}
