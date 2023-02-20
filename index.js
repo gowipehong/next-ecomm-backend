@@ -1,6 +1,7 @@
 import express from "express"
 import prisma from "./src/utils/prisma.js"
 import Prisma from '@prisma/client';
+import bcrypt from "bcryptjs";
 
 const app = express()
 const port = process.env.PORT || 8080
@@ -47,6 +48,7 @@ app.post('/users', async (req, res) => {
   })
 
   try {
+    data.password = bcrypt.hashSync(data.password, 8);
     const newUser = await prisma.user.create({
       data
     });
