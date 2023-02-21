@@ -3,6 +3,7 @@ import cors from "cors";
 import prisma from "./src/utils/prisma.js"
 import Prisma from '@prisma/client';
 import bcrypt from "bcryptjs";
+import { signAccessToken } from "./src/utils/jwt.js";
 
 const app = express()
 const port = process.env.PORT || 8080
