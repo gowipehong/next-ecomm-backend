@@ -1,4 +1,5 @@
 import express from "express"
+import cors from "cors";
 import prisma from "./src/utils/prisma.js"
 import Prisma from '@prisma/client';
 import bcrypt from "bcryptjs";
@@ -6,25 +7,26 @@ import bcrypt from "bcryptjs";
 const app = express()
 const port = process.env.PORT || 8080
 
+app.use(cors())
 app.use(express.json());
 
 function filter(obj, ...keys) {
   return keys.reduce((a, c) => ({ ...a, [c]: obj[c] }), {})
-} 
+}
 
 function validateUser(input) {
   const validationErrors = {}
 
   if (!('name' in input) || input['name'].length == 0) {
-    validationErrors['name'] = 'cannot be blank'
+    validationErrors['name'] = 'Cannot be blank'
   }
 
   if (!('email' in input) || input['email'].length == 0) {
-    validationErrors['email'] = 'cannot be blank'
+    validationErrors['email'] = 'Cannot be blank'
   }
 
   if (!('password' in input) || input['password'].length == 0) {
-    validationErrors['password'] = 'cannot be blank'
+    validationErrors['password'] = 'Cannot be blank'
   }
 
   if ('password' in input && input['password'].length < 8) {
@@ -32,7 +34,7 @@ function validateUser(input) {
   }
 
   if ('email' in input && !input['email'].match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-    validationErrors['email'] = 'is invalid'
+    validationErrors['email'] = 'Invalid Email'
   }
 
   return validationErrors
@@ -40,7 +42,7 @@ function validateUser(input) {
 
 app.post('/users', async (req, res) => {
   const data = req.body;
-  
+
   const validationErrors = validateUser(data)
 
   if (Object.keys(validationErrors).length != 0) return res.status(400).send({
@@ -52,12 +54,12 @@ app.post('/users', async (req, res) => {
     const newUser = await prisma.user.create({
       data
     });
-    return res.json(filter(newUser, 'id', 'name', 'email'));  
+    return res.json(filter(newUser, 'id', 'name', 'email'));
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
       const formattedError = {};
       formattedError[`${err.meta.target[0]}`] = 'already taken';
-      return res.status(500).send({ error: formattedError }); 
+      return res.status(500).send({ error: formattedError });
     }
     throw err;
   }
