@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 import { signAccessToken } from "./src/utils/jwt.js";
 
 const app = express()
-const port = process.env.PORT || 8080
+// const port = process.env.PORT || 8080
 
 app.use(cors())
 app.use(express.json());
@@ -112,7 +112,8 @@ app.post('/sign-in', async (req, res) => {
   return res.json({ accessToken })
 })
 
+export default app 
 
-app.listen(port, () => {
-  console.log(`App started; listening on port ${port}`)
-})
+// app.listen(port, () => {
+//   console.log(`App started; listening on port ${port}`)
+// })
