@@ -13,6 +13,7 @@ describe('POST /users and POST /sign-in', () => {
     await prisma.$connect();
   });
 
+  //used to clean up any global resources or to tear down a database connection or a server instance that was set up in the beforeAll function
   afterAll(async () => {
     await prisma.$disconnect();
   });
@@ -28,6 +29,7 @@ describe('POST /users and POST /sign-in', () => {
     await request(app).post('/users').send(user);
   });
 
+  //used to clean up any resources that were created in the beforeEach function
   afterEach(async () => {
     // Delete the user from the database after test
     await prisma.user.delete({
