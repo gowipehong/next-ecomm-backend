@@ -2,9 +2,13 @@ import { PrismaClient } from '@prisma/client'
 import request from "supertest"
 import app from "../../app.js"
 
-describe('POST /users and POST /sign-in', () => {
+describe('POST /users and POST /auth', () => {
   let prisma;
-  let user;
+  const user = {
+    name: 'John',
+    email: 'john9@example.com',
+    password: 'insecure',
+  };
 
   //only called once, before all the test cases in a test suite
   beforeAll(async () => {
@@ -21,11 +25,6 @@ describe('POST /users and POST /sign-in', () => {
   //called before each test case in a test suite. 
   beforeEach(async () => {
     // Create a new user using the users endpoint
-    user = {
-      name: 'John',
-      email: 'john9@example.com',
-      password: 'insecure',
-    };
     await request(app).post('/users').send(user);
   });
 
@@ -38,9 +37,9 @@ describe('POST /users and POST /sign-in', () => {
   });
 
   it('should return access token on successful signin', async () => {
-    // Test the sign-in endpoint to ensure that access token is returned
+    // Test the auth(sign-in) endpoint to ensure that access token is returned
     const response = await request(app)
-      .post('/sign-in')
+      .post('/auth')
       .send({ email: user.email, password: user.password })
       .set('Accept', 'application/json')
 
@@ -49,10 +48,10 @@ describe('POST /users and POST /sign-in', () => {
   });
 
   it('wrong email should fail to sign in and doesnt return acessToken', async () => {
-    // Test the sign-in endpoint with a wrong email
+    // Test the auth(sign-in) endpoint with a wrong email
     const response = await request(app)
-      .post('/sign-in')
-      .send({ email: 'geyz@example.com', password: user.password})
+      .post('/auth')
+      .send({ email: 'geyz@example.com', password: user.password })
       .set('Accept', 'application/json')
 
     expect(response.status).toBe(401);
@@ -63,9 +62,9 @@ describe('POST /users and POST /sign-in', () => {
   });
 
   it('wrong password should fail to sign in ', async () => {
-    // Test the sign-in endpoint with a wrong password
+    // Test the auth(sign-in) endpoint with a wrong password
     const response = await request(app)
-      .post('/sign-in')
+      .post('/auth')
       .send({ email: user.email, password: 'jrkehnf93485' })
       .set('Accept', 'application/json')
 
