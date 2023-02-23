@@ -20,7 +20,6 @@ describe("POST /users", () => {
 
   beforeAll(async () => {
     await cleanupDatabase()
-
   })
 
   afterAll(async () => {
@@ -28,21 +27,38 @@ describe("POST /users", () => {
   })
 
   it("with valid data should return 200", async () => {
+    const newUser = {
+      name: 'John',
+      email: 'john1@example.com',
+      password: 'insecure',
+    }
+
     const response = await request(app)
       .post("/users")
-      .send(user)
+      .send(newUser)
       .set('Accept', 'application/json')
     expect(response.statusCode).toBe(200);
     expect(response.body.id).toBeTruthy;
-    expect(response.body.name).toBe(user.name);
-    expect(response.body.email).toBe(user.email);
+    expect(response.body.name).toBe(newUser.name);
+    expect(response.body.email).toBe(newUser.email);
     expect(response.body.password).toBe(undefined);
   });
 
   it("with same email should fail", async () => {
+    const duplicateUser = {
+      name: 'John',
+      email: 'john2@example.com',
+      password: 'insecure',
+    }
+
+    await request(app)
+      .post("/users")
+      .send(duplicateUser)
+      .set('Accept', 'application/json')
+
     const response = await request(app)
       .post("/users")
-      .send(user)
+      .send(duplicateUser)
       .set('Accept', 'application/json')
     expect(response.statusCode).toBe(500);
     expect(response.body.error).toBeTruthy;
@@ -50,11 +66,14 @@ describe("POST /users", () => {
   });
 
   it("with invalid password should fail", async () => {
-    user.email = "unique@example.com"
-    user.password = "short"
+    const userWithInvalidPassword = {
+      email: user.email,
+      password: "short"
+    }
+
     const response = await request(app)
       .post("/users")
-      .send(user)
+      .send(userWithInvalidPassword)
       .set('Accept', 'application/json')
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBeTruthy;
@@ -62,11 +81,14 @@ describe("POST /users", () => {
   });
 
   it("with invalid email should fail", async () => {
-    user.email = "uniquexample.com"
-    user.password = "insecure"
+    const userWithInvalidEmail = {
+      email: "wrongemail.com",
+      password: user.password
+    }
+
     const response = await request(app)
       .post("/users")
-      .send(user)
+      .send(userWithInvalidEmail)
       .set('Accept', 'application/json')
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBeTruthy;
@@ -74,12 +96,17 @@ describe("POST /users", () => {
   });
 
   it("blank user name should fail", async () => {
-    user.name = ""
-    user.email = "unique@xample.com"
-    user.password = "insecure"
+    const userWithBlankName = {
+      name: "",
+      email: user.email,
+      password: user.password
+    }
+
+    user.name=""
+
     const response = await request(app)
       .post("/users")
-      .send(user)
+      .send(userWithBlankName)
       .set('Accept', 'application/json')
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBeTruthy;
