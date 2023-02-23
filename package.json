@@ -22,6 +22,7 @@
   "homepage": "https://github.com/gowipehong/next-ecomm#readme",
   "dependencies": {
     "@prisma/client": "^4.10.1",
+    "@sendgrid/mail": "^7.7.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.18.2",
