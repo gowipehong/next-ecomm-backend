@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
     .then(user => {
       const msg = {
         to: `${data.email}`, 
-        from: 'gowipehong@gmail.com', 
+        from: process.env.SENDGRID_EMAIL, 
         subject: 'Welcome to Next-Ecomm',
         text: `Hi ${data.name},\n\nThank you for signing up! We're excited to have you on board.\n\nBest regards, \nThe Next-Ecomm team`,
       }
