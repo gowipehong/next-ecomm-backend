@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors";
 import userRouter from "./src/controllers/users.controllers.js"
 import authRouter from "./src/controllers/auth.controllers.js"
+import imagesRouter from "./src/controllers/image.controller.js"
 import auth from "./src/middlewares/auth.js"
 import morgan from "morgan"
 const app = express()
@@ -12,11 +13,7 @@ app.use(express.json())
 
 app.use('/users', userRouter)
 app.use('/auth', authRouter)
-
-//temporary authenticated route
-app.get('/protected', auth, (req, res) => {
-  res.json({ "hello": "world" })
-})
+app.use('/images', imagesRouter)
 
 export default app
 
