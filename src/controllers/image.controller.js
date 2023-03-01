@@ -18,7 +18,7 @@ router.post('/', auth, async (req, res) => {
       }
     });
 
-    return res.status(201).json(newImage);
+    return res.status(200).json(newImage);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Failed to create image' });
