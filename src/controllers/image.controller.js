@@ -14,11 +14,11 @@ router.post('/', auth, async (req, res) => {
         title: data.title,
         url: data.url,
         description: data.description,
-        price: data.price
+        price: parseInt(data.price) //convert string to int as schema accept Int
       }
     });
 
-    return res.status(201).json(newImage);
+    return res.status(200).json(newImage);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: 'Failed to create image' });
