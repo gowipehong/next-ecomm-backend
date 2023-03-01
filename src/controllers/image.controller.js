@@ -14,7 +14,7 @@ router.post('/', auth, async (req, res) => {
         title: data.title,
         url: data.url,
         description: data.description,
-        price: data.price
+        price: parseInt(data.price) //convert string to int as schema accept Int
       }
     });
 
