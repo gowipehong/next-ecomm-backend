@@ -30,7 +30,10 @@ router.post('/', async (req, res) => {
   })
 
   const accessToken = await signAccessToken(user)
-  return res.json({ accessToken })
+  return res.json({
+    userId: user.id,
+    accessToken: accessToken
+  })
 })
 
 export default router
