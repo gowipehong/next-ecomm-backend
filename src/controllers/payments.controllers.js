@@ -32,8 +32,8 @@ router.post('/:id', async (req, res) => {
     payment_method_types: ['card'],
     mode: 'payment',
     line_items: itemData,
-    success_url: 'https://google.com',
-    cancel_url: 'https://youtube.com'
+    success_url: `${process.env.CLIENT_URL}/successful-purchase/${req.params.id}`,
+    cancel_url: `${process.env.CLIENT_URL}`
   })
   return res.json({ url: session.url })
 })
